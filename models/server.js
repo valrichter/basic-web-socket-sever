@@ -37,9 +37,12 @@ class Server {
 
   sockets() {
     this.io.on("connection", (socket) => {
-      console.log("Connection client", socket.id);
       socket.on("disconnect", () => {
         console.log("Desconection client", socket.id);
+      });
+
+      socket.on("send-message", (payload) => {
+        this.io.emit("send-message", payload);
       });
     });
   }
