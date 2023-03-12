@@ -5,6 +5,8 @@ class Server {
   constructor() {
     this.app = express();
     this.port = process.env.PORT;
+    this.server = require("http").createServer(this.app);
+    this.io = require("socket.io")(this.server);
     this.paths = {};
 
     // Middlewares
@@ -12,6 +14,9 @@ class Server {
 
     // Rutas de mi aplicacion
     this.routes();
+
+    // Sockets
+    this.sockets();
   }
 
   async conectarDB() {
@@ -30,8 +35,17 @@ class Server {
     //this.app.use(this.paths.auth, require("../routes/auth"));
   }
 
+  sockets() {
+    this.io.on("connection", (socket) => {
+      console.log("Connection client", socket.id);
+      socket.on("disconnect", () => {
+        console.log("Desconection client", socket.id);
+      });
+    });
+  }
+
   listen() {
-    this.app.listen(this.port, () => {
+    this.server.listen(this.port, () => {
       console.log(`Server on port ${this.port}`);
     });
   }
