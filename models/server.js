@@ -1,6 +1,6 @@
-const express = require("express");
-const cors = require("cors");
-const { socketController } = require("../sockets/controller");
+import express from "express";
+import cors from "cors";
+import { socketController } from "../sockets/controller";
 
 class Server {
   constructor() {
@@ -29,7 +29,7 @@ class Server {
     this.app.use(cors());
 
     // Directorio publico
-    this.app.use(express.static("public"));
+    this.app.use(static("public"));
   }
 
   routes() {
@@ -47,4 +47,4 @@ class Server {
   }
 }
 
-module.exports = Server;
+export default Server;
